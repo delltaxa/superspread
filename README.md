@@ -3,6 +3,11 @@
 EXTREMELY ugly code!!!
 do not read if you are sensitive!!
 
+# Update
+
++ added my own obfuscator (delltaxa/obfusex) (setup-script and holder-script will now be obfusscated)
++ old tmp folders are now getting deleted (if you restart it)
+
 # Usage
 
 Example:
@@ -31,4 +36,9 @@ to deploy (PYTHON only) (no executables)
 
 # WARNING
 
-It is extremely easy to deobfuscate so you should obfuscate it if you don't want anyone to read your code
+It is not that hard (except for maybe beginners) to deobfuscate so you should obfuscate it if you don't want anyone to read your code
+
+# images
+
+![image](https://user-images.githubusercontent.com/114283067/209446717-1aa0be9d-e376-437f-aff1-69972547dd91.png)
+
